@@ -1,0 +1,32 @@
+            TEMA 2:
+
+Task 1: Am verificat daca fiecare coordonata a blockului apartine chunkului si, in caz afirmativ, am plasat "block" in punctul coordonatelor.
+
+Task 2: Am "rearanjat" coordonatele colturilor, mutandu-le astfel incat sa parcurg de la cele mai mici la cele mai mari paralelipipedul, iar apoi m-am folosit de functia de la taskul 1, pentru a plasa "block", intrucat ea verifica daca sa puna sau nu blockul (prin verificarea coordonatelor).
+
+Task 3: Aici m-am folosit de formula binestiuta a distantei intre 2 puncte in spatiu ("pitagora" in spatiu), pe care am comparat-o raza pe care am primit-o ca parametru, punand astfel "block" (cu functia de la taskul 1 pentru a verifica iar daca apartine chunk-ului) pe toate pozitiile care au o distanta mai mica decat raza oferita.
+
+Task 4: Taskul asta a fost facut "muncitoreste", am verificat fiecare vecin (fie direct, fie de muchie), in total 18 vecini, iar daca acestia nu erau deja blockul "tinta" in jurul caruia voiam sa facem invelisul, am pus o valoare temporara (pentru a evita cazul in care blockul tinta si invelisul sunt de acelasi tip), aleasa de mine 4 (prima mai mare decat celelalte posibile din chunk), iar apoi am pus blockul invelitor pe pozitiile cu valoarea temporara.
+
+Task 5: Pentru acest task am folosit subprogramul ajutator "chunk_fill_xOz" care insemneaza fiecare block egal din acel plan xz, prin deplasare cu un block cu cel transmis cu o valoare temporara  (tot 4). Apoi, in functia de baza, toate valorile insemnate au devenit noua valoare a blockului.
+
+Task 6: Tot cu o functie ajutatoare "chunk_fill_xyz" am facut si acest task, avand in spate aceeasi logica, numai ca se mai adauga si "y-ul", intrucat nu mai este doar pentru singur plan xz, insemnand la fel toti vecinii si apoi inlouind cu blockul dat.
+
+Task 7: Aici am alocat dinamic un nou chunk (="new_chunk"), care are width-ul si depth-ul inversate, iar apoi am "transpus" valorile si am eliberat memoria chunkului vechi, returnand noul chunk.
+
+Task 8: La acest task am folosit ... 9 functii ajutatoare. (Termenul de "structura" inseamna multimea de blokuri de acelasi fel lipita) Si avem 
+1. dfs_3d, care, prin dfs, imi verifica daca o structura poate sa cada un block, si cade fie daca sub ea este aer sau daca sub ea este un block al aceleiasi structuri.
+2. can_fall_simple, care verifica daca o structura poate cadea simplu, adica fara "complicatii", in sensul ca daca orice block al structurii respecta cerintele dfs ului si nu e pe nivelul 0, va cadea.
+3. chunk_fatal_fill_xyz, un del de functie de la taskul 6, dar cu ceva in plus, pe toate valorile adiacente egale cu blockul respectiv pune -1, iar daca vecinul de sub un block, DOAR CEL DE SUB (adica cel care l-ar putea impiedica), este de alt tip, dar nu aer, pune -1 si pe toate blockurile din acea structura, si tot asa, pentru toate structurile care au "probleme" (adica un block sau mai multe din ele nu pot sa cada pentru ca FIX SUB ELE este un block de alt tip).
+4. chunk_fatal_fill, ca si la taskul 6, pune pe fiecare valoare de -1 (prima mai mica care nu apartine chunkului), blockul specificat.
+5. chunk_fatal_fall, reprezinta celalalt "tip de cadere", pe langa cel "simplu", adica daca o structura nu poate sa cada pentru ca, unul sau mai multe blockuri au "probleme", considera un chunk auxiliar (tot new_chunk), in care copiaza chunk-ul normal, doar ca uneste cele 2 sau cate structuri se "tin una pe alta" din a cadea intr-una singura, verificand cu dfs_3d (functia care imi verifica daca poate sa cada un block), daca ar putea cadea "impreuna" toate acele structuri.
+6. chunk_increment_fill_xyz, care face tot ce face chunk_fatal_fall_xyz, doar ca nu pune -1, ci doar incrementeaza valorile cu 4 (adica le marcheaza ca blockuri care pot sa cada)
+7. chunk_fill_increment face tot ce face si chunk_fatal_fall, doar ca nu mai modifica valorile incrementate.
+8. si 9. chunk_dfs_check_connection si all_connected_to_ground, verifica prin dfs daca orice block din chunk e "conectat" de un block de pe nivelul 0, adica de un block care NU cade, functia a 2 a returnandu-mi 1 daca sunt toate conectate si 0 in caz contrar.
+restul codului :parcurg cat timp exista structuri care cad simplu, si fac "caderea", iar daca mai sunt structuri care nu sunt conectate de pamant (stau in aer ca pe Minecraft), verific daca cad "fatal".
+
+Task 9: prin supercoding_vector am stocat valorile importante din chunk, adica tipul blockului si numarul, astfel, ultima cifra reprezinta tipul blockului, restul numarul, iar apoi am verificat daca numarul se poate pune pe 5 biti sau pe 12, punand in tabloul unidimensional cerut valorile.
+
+Task 10: pentru acest task, am verificat pentru fiecare element daca al 3 lea bit e 0 sau 1 (adica daca am nevoie de ambele elemente sau nu), si am creat noul chunk din tipul blockului si numarul lor.
+
+(RIP VALGRIND)
